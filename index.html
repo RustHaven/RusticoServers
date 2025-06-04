@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RusticoServers | Premium Rust Gaming</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Oxanium:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #5865F2;
+      --primary-dark: #4752C4;
+      --online: #3BA55D;
+      --offline: #ED4245;
+      --unknown: #FAA61A;
+      --text: #F0F0F0;
+      --text-secondary: #B0B0B0;
+      --bg: #0A0A0E;
+      --bg-secondary: #15151E;
+      --bg-tertiary: #1E1E2D;
+      --accent: #FF4D4D;
+      --discord: #5865F2;
+      --nav-height: 70px;
+      --border-radius: 12px;
+      --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 25% 25%, rgba(88, 101, 242, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(237, 66, 69, 0.15) 0%, transparent 50%);
+      line-height: 1.6;
+    }
+
+    /* Navigation */
+    nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      padding: 0 20px;
+      height: var(--nav-height);
+      background: rgba(10, 10, 14, 0.95);
+      backdrop-filter: blur(10px);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      padding: 8px 16px;
+      border-radius: var(--border-radius);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: var(--transition);
+    }
+
+    nav a:hover {
+      color: var(--text);
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    nav a.active {
+      color: var(--text);
+    }
+
+    nav a.active::after {
+      width: 100%;
+    }
+
+    /* Main Content */
+    .main-content {
+      padding-top: var(--nav-height);
+      min-height: calc(100vh - 100px);
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 100px 20px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-family: 'Oxanium', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #FFFFFF, #B0B0FF);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 1px;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--text-secondary);
+      max-width: 800px;
+      margin: 0 auto 40px;
+    }
+
+    /* Buttons */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px;
+      background-color: var(--primary);
+      color: white;
+      padding: 14px 28px;
+      border-radius: var(--border-radius);
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .button:active {
+      transform: translateY(0);
+    }
+
+    .button-discord {
+      background-color: var(--discord);
+    }
+
+    .button-discord:hover {
+      background-color: #4752C4;
+    }
+
+    /* Server Status Section */
+    .server-section {
+      background: var(--bg-secondary);
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 40px;
+      border-radius: var(--border-radius);
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
+    }
+
+    .server-section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .server-section h2 {
+      font-family: 'Oxanium', sans-serif;
+      margin-bottom: 20px;
+      color: var(--text);
+      font-size: 1.8rem;
+      letter-spacing: 0.5px;
+    }
+
+    .server-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .info-card {
+      background: var(--bg-tertiary);
+      padding: 20px;
+      border-radius: var(--border-radius);
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .info-card h3 {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .info-card p {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .status-online { color: var(--online); }
+    .status-offline { color: var(--offline); }
+    .status-unknown { color: var(--unknown); }
+
+    /* Loading Animation */
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      border-top-color: var(--primary);
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      background: var(--bg-secondary);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Tabs */
+    .tab {
+      display: none;
+      padding-bottom: 60px;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    #home {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Server Features */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 40px auto;
+    }
+
+    .feature-card {
+      background: var(--bg-secondary);
+      padding: 25px;
+      border-radius: var(--border-radius);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: var(--transition);
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: var(--primary);
+    }
+
+    .feature-card h3 {
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* Time Display */
+    .time-display {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      margin-top: 20px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      nav {
+        gap: 15px;
+        padding: 0 10px;
+      }
+      
+      nav a {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+      
+      .hero {
+        padding: 80px 20px 40px;
+      }
+      
+      .server-section {
+        padding: 30px 20px;
+        margin: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <a href="#" class="active" onclick="showTab('home')">Home</a>
+    <a href="#" onclick="showTab('servers')">Servers</a>
+    <a href="https://discord.gg/VDr5nNXEgR" target="_blank">Discord</a>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Home Tab -->
+    <div id="home" class="tab">
+      <div class="hero">
+        <h1>RUSTICO<span style="color: var(--accent)">SERVERS</span></h1>
+        <p>Experience the ultimate Rust gaming experience with our high-performance servers, active community, and balanced gameplay.</p>
+        <div>
+          <a href="https://discord.gg/VDr5nNXEgR" target="_blank" class="button button-discord">
+            <i class="fab fa-discord"></i> Join Discord
+          </a>
+          <a href="#" onclick="showTab('servers')" class="button">
+            <i class="fas fa-server"></i> Server Status
+          </a>
+        </div>
+        <div class="time-display" id="current-time"></div>
+      </div>
+
+      <div class="features">
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <h3>High Performance</h3>
+          <p>Our servers run on premium hardware with 99.9% uptime and low latency worldwide.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚖️</div>
+          <h3>Balanced Gameplay</h3>
+          <p>Carefully tuned rates and mods to ensure fair and competitive gameplay for all.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h3>Active Anti-Cheat</h3>
+          <p>Advanced anti-cheat systems with active monitoring to ensure fair play.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Servers Tab -->
+    <div id="servers" class="tab">
+      <div class="hero">
+        <h1>Server <span style="color: var(--accent)">Status</span></h1>
+        <p>Real-time server information</p>
+      </div>
+      
+      <div class="server-section">
+        <h2>[US] Rustico.gg - 2x | Weekly | Skinbox | Vanilla+</h2>
+        
+        <div class="server-info">
+          <div class="info-card">
+            <h3>Server Status</h3>
+            <p id="status" class="status-unknown"><span class="loading-spinner"></span>Loading...</p>
+          </div>
+          <div class="info-card">
+            <h3>Last Wipe</h3>
+            <p id="last-wipe">Loading...</p>
+          </div>
+          <div class="info-card">
+            <h3>Next Wipe</h3>
+            <p id="next-wipe">Loading...</p>
+          </div>
+        </div>
+        
+        <div style="margin-top: 30px;">
+          <p id="last-update" style="color: var(--text-secondary); font-size: 0.9rem;">Last updated: Just now</p>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 40px;">
+        <a href="steam://connect/your.server.ip:28015" class="button">
+          <i class="fas fa-plug"></i> Connect Now
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 RusticoServers. All rights reserved. Not affiliated with Facepunch Studios.
+  </footer>
+
+  <!-- Font Awesome for icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  
+  <!-- Main JavaScript -->
+  <script>
+    // Tab Navigation
+    function showTab(tabId) {
+      document.querySelectorAll('.tab').forEach(t => t.style.display = 'none');
+      document.getElementById(tabId).style.display = 'block';
+      document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      // If showing servers tab, force an immediate update
+      if (tabId === 'servers') {
+        fetchServerInfo();
+      }
+    }
+
+    // Display current time in 1:00:00 PM format
+    function updateTime() {
+      const now = new Date();
+      let hours = now.getHours();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // Convert 0 to 12
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const seconds = now.getSeconds().toString().padStart(2, '0');
+      
+      document.getElementById('current-time').textContent = 
+        `Current server time: ${hours}:${minutes}:${seconds} ${ampm}`;
+    }
+
+    // Server Status Function
+    let lastUpdateTime = new Date();
+    async function fetchServerInfo() {
+      const statusElement = document.getElementById("status");
+      const lastWipeElement = document.getElementById("last-wipe");
+      const nextWipeElement = document.getElementById("next-wipe");
+      const lastUpdateElement = document.getElementById("last-update");
+      
+      try {
+        // Show loading state
+        statusElement.innerHTML = '<span class="loading-spinner"></span>Checking...';
+        
+        // Fetch server data from BattleMetrics
+        const res = await fetch("https://api.battlemetrics.com/servers/33572630");
+        if (!res.ok) throw new Error('Network response was not ok');
+        
+        const data = await res.json();
+        const attr = data.data.attributes;
+        const details = attr.details || {};
+
+        // Update status
+        const isOnline = attr.status === 'online';
+        statusElement.textContent = isOnline ? 'Online' : 'Offline';
+        statusElement.className = isOnline ? 'status-online' : 'status-offline';
+        
+        // Update wipe information
+        const lastWipe = details.rust_last_wipe ? 
+          new Date(details.rust_last_wipe).toLocaleString() : 'Unknown';
+        lastWipeElement.textContent = lastWipe;
+        
+        // Calculate next wipe (assuming weekly wipes on Thursday)
+        const nextWipeDate = calculateNextWipe();
+        nextWipeElement.textContent = nextWipeDate.toLocaleString();
+        
+        // Update last updated time
+        lastUpdateTime = new Date();
+        lastUpdateElement.textContent = `Last updated: ${formatTimeSince(lastUpdateTime)}`;
+        
+      } catch (error) {
+        console.error('Error fetching server info:', error);
+        statusElement.textContent = "Connection Error";
+        statusElement.className = 'status-unknown';
+        lastWipeElement.textContent = "Unknown";
+        nextWipeElement.textContent = "Unknown";
+        lastUpdateElement.textContent = `Last updated: ${formatTimeSince(lastUpdateTime)} (Error)`;
+      }
+    }
+
+    // Calculate next wipe date (weekly on Thursday)
+    function calculateNextWipe() {
+      const now = new Date();
+      const nextWipe = new Date(now);
+      
+      // Set to next Thursday at wipe time (19:00 UTC)
+      nextWipe.setUTCDate(now.getUTCDate() + (4 - now.getUTCDay() + 7) % 7);
+      nextWipe.setUTCHours(19, 0, 0, 0);
+      
+      // If it's already past this week's wipe, go to next week
+      if (nextWipe < now) {
+        nextWipe.setUTCDate(nextWipe.getUTCDate() + 7);
+      }
+      
+      return nextWipe;
+    }
+
+    // Format time since last update
+    function formatTimeSince(date) {
+      const seconds = Math.floor((new Date() - date) / 1000);
+      
+      if (seconds < 5) return 'Just now';
+      if (seconds < 60) return `${seconds} seconds ago`;
+      if (seconds < 120) return '1 minute ago';
+      if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
+      return date.toLocaleTimeString();
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set home tab as active
+      showTab('home');
+      
+      // Start time updates
+      updateTime();
+      setInterval(updateTime, 1000);
+      
+      // Start server info updates (but only when on servers tab)
+      if (document.getElementById('servers').style.display === 'block') {
+        fetchServerInfo();
+        setInterval(fetchServerInfo, 5000);
+      }
+    });
+  </script>
+</body>
+</html>
